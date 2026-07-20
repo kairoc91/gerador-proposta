@@ -792,6 +792,7 @@ img {
   .editor-wrapper {
     width: 440px !important;
     flex-shrink: 0;
+    flex: none !important;
   }
 
   .preview-wrapper-pane {
