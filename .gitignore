@@ -22,8 +22,28 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Testes e Relatórios
 test-results/
 playwright-report/
 blob-report/
 .playwright/
 v0/
+
+# Ambiente e Segredos
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Caches e Deploy local
+.vercel/
+.vite/
+.eslintcache
+*.tsbuildinfo
+
+# Arquivos de Sistema
+Thumbs.db
+.Spotlight-V100
+.Trashes
