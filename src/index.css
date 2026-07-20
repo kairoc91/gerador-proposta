@@ -1,0 +1,836 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #121212;          /* Fundo principal ultra dark */
+  --color-surface: #1e1e1e;     /* Painéis e cards de formulários */
+  --color-input: #2a2a2a;       /* Inputs e áreas de escrita */
+  --color-border: #333333;      /* Bordas sutis */
+  --color-text: #ffffff;        /* Texto claro principal (#FFFFFF) */
+  --color-muted: #bcbcbc;       /* Texto secundário (#BCBCBC) */
+  --color-accent: #d6ff00;      /* Destaque lime neon (#D6FF00) */
+  --color-accent-hover: #bade00;
+  --color-accent-glow: rgba(214, 255, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(9, 9, 11, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* App Layout Principal (Top Navbar + Split Screen) */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Navbar Superior */
+.top-navbar {
+  height: 60px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.brand-badge {
+  background: var(--color-accent);
+  color: #000000;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Botões da aplicação */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #000000;
+  box-shadow: 0 0 15px var(--color-accent-glow);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  color: #000000;
+}
+
+.btn-secondary {
+  background: var(--color-input);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-border);
+  color: #ffffff;
+}
+
+.btn-icon {
+  padding: 0.45rem;
+  background: transparent;
+  color: var(--color-muted);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+  background: var(--color-input);
+  color: var(--color-text);
+}
+
+/* Barra de Abas Responsiva (Mobile First) */
+.mobile-tabs {
+  display: flex;
+  height: 50px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.mobile-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.mobile-tab-btn.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+  background: rgba(214, 255, 0, 0.04);
+}
+
+/* Invólucro de Painel para alternância em Mobile */
+.pane-wrapper {
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pane-wrapper.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Área de trabalho Principal (Mobile First) */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100vh - 110px); /* 60px header + 50px tabs */
+  overflow: hidden;
+}
+
+/* Coluna de Edição / Formulários (Esquerda - Mobile First) */
+.editor-pane {
+  width: 100%;
+  min-width: 100%;
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.editor-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  flex-shrink: 0;
+}
+
+.editor-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editor-scroll,
+.editor-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Sub-cards retráteis no Editor */
+.sub-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.sub-card.open {
+  border-color: var(--color-accent);
+}
+
+.sub-card-header {
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  background: var(--color-surface);
+  transition: background 0.15s ease;
+}
+
+.sub-card-header:hover {
+  background: var(--color-input);
+}
+
+.sub-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sub-card-body {
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: var(--color-surface);
+}
+
+/* Cards de Seção no Editor */
+.section-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.section-card-header {
+  padding: 0.85rem 1rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Estilos de Formulários */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: var(--color-input);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.form-row > .form-group {
+  flex: 1;
+}
+
+/* Botões de Adicionar Bloco */
+.btn-add-block {
+  width: 100%;
+  padding: 0.65rem;
+  background: var(--color-input);
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-add-block:hover {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+}
+
+/* Coluna de Preview (Documento A4 no Lado Direito - Mobile First) */
+.preview-pane {
+  width: 100%;
+  flex: 1;
+  background: var(--color-bg);
+  overflow-y: auto;
+  overflow-x: hidden; /* Evita barra de rolagem horizontal com elemento em escala */
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.preview-wrapper {
+  width: 794px; /* Fixa a largura original do A4 antes do transform */
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(calc((100vw - 2rem) / 794));
+  transform-origin: top center;
+  margin-bottom: calc(-1118px * (1 - (100vw - 2rem) / 794));
+}
+
+/* ============================================================
+   A4 DOCUMENT (DEFINIDO EM MILÍMETROS COM SUB-LINHA COMPENSADA)
+   min-height configurado para exatamente 295mm para evitar quebra
+   e geração de página extra em branco!
+   ============================================================ */
+.a4-page {
+  width: 210mm;
+  min-height: 295mm;
+  max-height: 295mm;
+  padding: 15mm 15mm;
+  background: #ffffff;
+  color: var(--color-bg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5pt;
+  line-height: 1.4;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+  box-sizing: border-box;
+  border-top: 4px solid var(--color-accent);
+}
+
+.a4-page.pdf-mode {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 295mm !important;
+  max-height: 295mm !important;
+  overflow: hidden !important;
+  border-top: 4px solid var(--color-accent) !important;
+}
+
+/* Hierarquia de Tipografia do Preview A4 */
+.proposal-header-block {
+  border-bottom: 2px solid var(--color-bg);
+  padding-bottom: 2mm;
+  margin-bottom: 1mm;
+}
+
+.proposal-main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14pt !important;
+  font-weight: 800;
+  color: var(--color-bg);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.2 !important;
+}
+
+.proposal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.proposal-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11pt !important;
+  font-weight: 700;
+  color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-bottom: 1mm;
+  border-bottom: 1px solid var(--color-muted);
+  line-height: 1.25 !important;
+}
+
+.proposal-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 11pt;
+  background: var(--color-accent);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.proposal-text-content {
+  font-size: 9.5pt !important;
+  line-height: 1.45 !important;
+  color: #1f2937;
+  white-space: pre-line;
+}
+
+/* Listas de Diferenciais */
+.deliverables-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.deliverable-card {
+  padding: 2mm 3mm;
+  background: #f9fafb;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.deliverable-icon {
+  width: 18px;
+  height: 18px;
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5pt !important;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.deliverable-text h4 {
+  font-size: 9.5pt !important;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2 !important;
+}
+
+.deliverable-text p {
+  font-size: 9pt !important;
+  color: #374151;
+  margin-top: 0.1rem;
+  line-height: 1.3 !important;
+}
+
+/* ============================================================
+   TABELAS A4 ELEGANTES E ROBUSTAS
+   ============================================================ */
+.proposal-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1mm;
+  font-size: 9pt !important;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.proposal-table tr {
+  vertical-align: middle !important;
+}
+
+.proposal-table th {
+  background: var(--color-bg);
+  color: #ffffff;
+  padding: 8px 10px !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  font-weight: 700;
+  font-size: 8.5pt !important;
+  line-height: 1.4 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: none;
+}
+
+.proposal-table td {
+  padding: 8px 10px !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid #e5e7eb;
+  color: var(--color-bg);
+  font-size: 9pt !important;
+  line-height: 1.4 !important;
+}
+
+/* Divisores verticais discretos nas colunas */
+.proposal-table th + th,
+.proposal-table td + td {
+  border-left: 1px solid #e5e7eb;
+}
+
+.proposal-table tr:last-child td {
+  border-bottom: none;
+}
+
+.proposal-table tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+.proposal-table tfoot td {
+  padding: 8px 10px !important;
+  vertical-align: middle !important;
+  line-height: 1.4 !important;
+  border-top: 2px solid var(--color-bg);
+  background: var(--color-muted);
+  color: var(--color-bg);
+}
+
+.pricing-note-box {
+  margin-top: 1.5mm;
+  padding: 2mm 3mm;
+  background: #f4f4f5;
+  border-radius: 4px;
+  border-left: 3px solid var(--color-accent);
+  font-size: 9pt !important;
+  line-height: 1.4 !important;
+  color: var(--color-bg);
+  display: flex;
+  align-items: center;
+}
+
+/* Timeline */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+  position: relative;
+  padding-left: 0.85rem;
+}
+
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: #d1d5db;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  top: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111827;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px #111827;
+}
+
+.timeline-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeline-item-header h4 {
+  font-size: 9.5pt !important;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2 !important;
+}
+
+.timeline-badge {
+  font-size: 8.5pt !important;
+  font-weight: 700;
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+}
+
+.timeline-item p {
+  font-size: 9pt !important;
+  color: #374151;
+  margin-top: 0.15rem;
+  line-height: 1.3 !important;
+}
+
+/* Terms & Signature */
+.clauses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  padding-left: 1.1rem;
+  font-size: 9pt !important;
+  line-height: 1.4 !important;
+  color: #374151;
+}
+
+.signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+}
+
+.signature-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.signature-line {
+  width: 100%;
+  height: 1px;
+  background: #111827;
+  margin-bottom: 0.35rem;
+}
+
+.signature-box strong {
+  font-size: 9.5pt !important;
+  color: #111827;
+  line-height: 1.2 !important;
+}
+
+.signature-box span {
+  font-size: 8.5pt !important;
+  color: #4b5563;
+  line-height: 1.2 !important;
+}
+
+/* Footer note inside A4 */
+.proposal-footer {
+  margin-top: auto;
+  padding-top: 2mm;
+  border-top: 1px solid #d1d5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 8.5pt !important;
+  color: #4b5563;
+}
+
+/* ============================================================
+   TAILWIND COMPATIBILITY FIXES FOR HTML2CANVAS
+   Força todas as imagens a serem inline por padrão, revertendo o
+   reset do Tailwind para evitar a quebra do cálculo de baseline.
+   ============================================================ */
+img {
+  display: inline !important;
+}
+
+/* Utility classes */
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+
+/* ============================================================
+   DESKTOP RESPONSIVE LAYOUT OVERRIDES (min-width: 1024px)
+   ============================================================ */
+@media (min-width: 1024px) {
+  .mobile-tabs {
+    display: none !important;
+  }
+
+  .main-content {
+    flex-direction: row !important;
+    height: calc(100vh - 60px) !important;
+  }
+
+  .pane-wrapper {
+    display: flex !important;
+    width: auto;
+    height: 100%;
+  }
+
+  .editor-wrapper {
+    width: 440px !important;
+    flex-shrink: 0;
+  }
+
+  .preview-wrapper-pane {
+    flex: 1 !important;
+  }
+
+  .editor-pane {
+    width: 100% !important;
+    max-width: 440px !important;
+    min-width: 380px !important;
+    border-right: 1px solid var(--color-border) !important;
+  }
+
+  .preview-pane {
+    padding: 2.5rem 1.5rem !important;
+  }
+
+  .preview-wrapper {
+    transform: none !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE OVERRIDES (max-width: 640px)
+   ============================================================ */
+@media (max-width: 640px) {
+  .top-navbar {
+    padding: 0 0.75rem !important;
+  }
+
+  .brand-logo span {
+    display: none; /* Oculta o título longo em mobile para abrir espaço */
+  }
+
+  .btn {
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    gap: 0.35rem !important;
+    white-space: nowrap !important;
+  }
+}
